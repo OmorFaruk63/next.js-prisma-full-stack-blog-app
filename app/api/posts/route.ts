@@ -1,47 +1,70 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client"; // Import Prisma for error types
+import { getCurrentUser } from "@/lib/auth";
+import { createPostSchema } from "@/lib/validators/post";
+import { generateSlug } from "@/lib/slug";
 
-export const runtime = "nodejs";
-
+// Create a new post
 export async function POST(req: Request) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const user = await getCurrentUser();
-
-    if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const body = await req.json();
+    const data = createPostSchema.parse(body);
+
+    const slug = generateSlug(data.title);
+
+    const exists = await prisma.post.findUnique({
+      where: { slug },
+    });
+
+    if (exists) {
+      return NextResponse.json(
+        { message: "Post with this title already exists" },
+        { status: 409 }
+      );
+    }
 
     const post = await prisma.post.create({
       data: {
-        title: body.title,
-        content: body.content,
-        slug: body.slug,
+        title: data.title,
+        content: data.content,
+        slug,
+        published: data.published ?? false,
         authorId: user.id,
       },
     });
 
     return NextResponse.json(post, { status: 201 });
-  } catch (error) {
-    // Check if the error is a known Prisma error
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      // P2002 is the code for unique constraint violation
-      if (error.code === "P2002") {
-        return NextResponse.json(
-          { message: "A post with this slug already exists." },
-          { status: 400 }
-        );
-      }
-    }
-
-    // Generic error handling
-    console.error("Post Creation Error:", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
+  } catch {
+    return NextResponse.json({ message: "Invalid input" }, { status: 400 });
   }
+}
+
+// Get all posts
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const page = Number(searchParams.get("page") ?? 1);
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const posts = await prisma.post.findMany({
+    orderBy: { createdAt: "desc" },
+    skip,
+    take: limit,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      createdAt: true,
+      author: {
+        select: { name: true },
+      },
+    },
+  });
+
+  return NextResponse.json(posts);
 }
