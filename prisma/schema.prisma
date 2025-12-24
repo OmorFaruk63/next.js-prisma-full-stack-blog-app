@@ -29,6 +29,7 @@ model Post {
   comments  Comment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@index([authorId])
 }
 
 model Comment {
