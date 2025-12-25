@@ -40,7 +40,8 @@ export async function PATCH(
   }
 
   const post = await prisma.post.findUnique({ where: { slug } });
-  if (!post || post.authorId !== user.id) {
+
+  if (!post) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 
@@ -67,7 +68,7 @@ export async function DELETE(
   }
 
   const post = await prisma.post.findUnique({ where: { slug } });
-  if (!post || post.authorId !== user.id) {
+  if (!post) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
 

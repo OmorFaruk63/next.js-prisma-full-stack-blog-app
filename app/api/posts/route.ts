@@ -60,6 +60,7 @@ export async function GET(req: Request) {
       title: true,
       slug: true,
       createdAt: true,
+      published: true,
       author: {
         select: { name: true },
       },
