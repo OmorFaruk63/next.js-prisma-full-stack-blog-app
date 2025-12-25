@@ -50,7 +50,9 @@ export default function NewPostPage() {
           Publish now
         </label>
 
-        <button className="bg-black text-white px-4 py-2 rounded">Save</button>
+        <button className="bg-blue-950 text-white px-4 py-2 rounded">
+          Save
+        </button>
       </form>
     </main>
   );

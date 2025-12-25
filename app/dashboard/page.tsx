@@ -1,33 +1,27 @@
 import DeleteBtn from "@/components/DeleteBtn";
+import prisma from "@/lib/prisma";
 import Link from "next/link";
 
-async function getMyPosts() {
-  const res = await fetch("/api/posts", {
-    cache: "no-store",
-    credentials: "include",
-  });
-
-  if (!res.ok) throw new Error("Unauthorized");
-  return res.json();
-}
-
-type data = {
-  id: number;
-  title: string;
-  slug: string;
-  createdAt: string;
-  published: boolean;
-  author: {
-    name: string;
-  };
-};
-
 export default async function DashboardPage() {
-  const posts: data[] = await getMyPosts();
+  const posts =
+    (await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        createdAt: true,
+        published: true,
+        author: {
+          select: { name: true },
+        },
+      },
+    })) || [];
   return (
     <main className="max-w-4xl mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">My Posts</h1>
-
       <a
         href="/dashboard/new"
         className="inline-block mb-4 bg-blue-950 text-white px-4 py-2  rounded"
@@ -44,23 +38,31 @@ export default async function DashboardPage() {
           </tr>
         </thead>
         <tbody>
-          {posts.map((post: data) => (
-            <tr key={post.id}>
-              <td className="border p-2">{post.title}</td>
-              <td className="border p-2">
-                {post.published ? "Published" : "Draft"}
-              </td>
-              <td className="border p-2">
-                <Link
-                  href={`/dashboard/edit/${post.slug}`}
-                  className="text-blue-600"
-                >
-                  Edit
-                </Link>
-                <DeleteBtn slug={post.slug} />
+          {posts.length > 0 ? (
+            posts.map((post) => (
+              <tr key={post.id}>
+                <td className="border p-2">{post.title}</td>
+                <td className="border p-2">
+                  {post.published ? "Published" : "Draft"}
+                </td>
+                <td className="border p-2">
+                  <Link
+                    href={`/dashboard/edit/${post.slug}`}
+                    className="text-blue-600"
+                  >
+                    Edit
+                  </Link>
+                  <DeleteBtn slug={post.slug} />
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} className="border p-2 text-center">
+                No posts found
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </main>
