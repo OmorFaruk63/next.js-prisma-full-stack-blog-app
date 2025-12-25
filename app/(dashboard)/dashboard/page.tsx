@@ -1,8 +1,8 @@
-import DeleteBtn from "@/app/components/DeleteBtn";
+import DeleteBtn from "@/components/DeleteBtn";
 import Link from "next/link";
 
 async function getMyPosts() {
-  const res = await fetch("http://localhost:3000/api/posts", {
+  const res = await fetch("/api/posts", {
     cache: "no-store",
     credentials: "include",
   });

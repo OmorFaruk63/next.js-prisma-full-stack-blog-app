@@ -1,5 +1,5 @@
 // app/layout.tsx
-import Header from "./components/Header";
+import Header from "../components/Header";
 import "./globals.css";
 
 export const metadata = {
