@@ -24,7 +24,6 @@ type data = {
 
 export default async function DashboardPage() {
   const posts: data[] = await getMyPosts();
-
   return (
     <main className="max-w-4xl mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">My Posts</h1>
