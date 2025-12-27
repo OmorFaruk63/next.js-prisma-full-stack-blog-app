@@ -5,7 +5,6 @@ import Link from "next/link";
 export default async function DashboardPage() {
   const posts =
     (await prisma.post.findMany({
-      where: { published: true },
       orderBy: { createdAt: "desc" },
       take: 10,
       select: {
