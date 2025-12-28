@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   }
   const posts =
     (await prisma.post.findMany({
-      where: user?.role === "ADMIN" ? {} : { author: { id: user?.id } },
+      where: { author: { id: user?.id } },
       orderBy: { createdAt: "desc" },
       take: 10,
       select: {
