@@ -1,24 +1,23 @@
-import { cookies } from "next/headers";
-import { verifyToken } from "./jwt";
-import prisma from "./prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// lib/getCurrentUser.ts
+import { getServerSession } from "next-auth";
+import prisma from "@/lib/prisma";
 
 export async function getCurrentUser() {
-  const token = (await cookies()).get("token")?.value;
-  if (!token) return null;
+  const session = await getServerSession(authOptions);
 
-  try {
-    const payload = verifyToken(token);
+  if (!session?.user?.email) return null;
 
-    return prisma.user.findUnique({
-      where: { id: String(payload.userId) },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-      },
-    });
-  } catch {
-    return null;
-  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      image: true,
+    },
+  });
+
+  return user;
 }

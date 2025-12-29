@@ -1,5 +1,7 @@
-import prisma from "@/lib/prisma";
+// app/api/auth/register/route.ts
+
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { registerSchema } from "@/lib/validators/auth";
 
@@ -26,13 +28,21 @@ export async function POST(req: Request) {
         name: data.name,
         email: data.email,
         password: hashedPassword,
+        // emailVerified: null, // already default null in your schema
       },
     });
 
+    // ─── THIS IS THE PART YOU ASKED ABOUT ─────────────────────────────
     return NextResponse.json({
-      message: "Check your email to verify account",
+      message: "Account created! Please check your email to verify.",
+      redirect: `/verify-email?email=${encodeURIComponent(data.email)}`,
     });
+    // ─────────────────────────────────────────────────────────────────
   } catch (err) {
-    return NextResponse.json({ message: "Invalid input" }, { status: 400 });
+    console.error(err);
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }
