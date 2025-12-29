@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -52,6 +53,13 @@ export default function LoginPage() {
 
         <button className="w-full bg-black text-white py-2 rounded">
           Login
+        </button>
+        <button
+          type="button"
+          onClick={() => signIn("google")}
+          className="w-full border py-2 rounded flex justify-center gap-2"
+        >
+          Continue with Google
         </button>
       </form>
     </main>

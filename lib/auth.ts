@@ -10,7 +10,7 @@ export async function getCurrentUser() {
     const payload = verifyToken(token);
 
     return prisma.user.findUnique({
-      where: { id: payload.userId },
+      where: { id: String(payload.userId) },
       select: {
         id: true,
         name: true,
