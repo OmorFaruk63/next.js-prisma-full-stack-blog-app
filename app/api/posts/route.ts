@@ -39,7 +39,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(post, { status: 201 });
-  } catch {
+  } catch (err) {
+    console.log(err);
     return NextResponse.json({ message: "Invalid input" }, { status: 400 });
   }
 }

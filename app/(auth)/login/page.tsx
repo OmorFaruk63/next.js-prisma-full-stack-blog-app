@@ -1,5 +1,6 @@
 "use client";
 //app/(auth)/login/page.tsx
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -19,21 +20,11 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/signin/credentials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      const res = await signIn("credentials", {
+        email: form.email,
+        password: form.password,
+        callbackUrl,
       });
-
-      if (!res.ok) {
-        const data = await res.json();
-        if (data.error === "Email not verified") {
-          setError("Please verify your email first. Check your inbox.");
-        } else {
-          setError(data.error || "Invalid credentials");
-        }
-        return;
-      }
 
       // Successful login → redirect
       router.push(callbackUrl);
@@ -69,7 +60,7 @@ export default function LoginPage() {
             {/* Google Sign In */}
             <button
               type="button"
-              onClick={handleGoogleSignIn}
+              onClick={() => signIn("google", { callbackUrl: "/" })}
               disabled={loading}
               className="w-full flex items-center justify-center gap-3 bg-gray-800/70 hover:bg-gray-700/70 border border-gray-700 rounded-xl py-3 px-4 text-gray-200 font-medium transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 disabled:opacity-50 mb-6"
             >

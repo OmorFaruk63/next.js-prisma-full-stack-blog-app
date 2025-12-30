@@ -1,3 +1,4 @@
+// app/api/auth/login/route.ts
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = signToken({ userId: user.id });
+    const token = signToken({ userId: Number(user.id) });
 
     const response = NextResponse.json({
       id: user.id,

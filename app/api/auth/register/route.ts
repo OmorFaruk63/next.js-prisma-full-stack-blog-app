@@ -1,48 +1,33 @@
 // app/api/auth/register/route.ts
 
-import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { registerSchema } from "@/lib/validators/auth";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const data = registerSchema.parse(body);
+  const { name, email, password } = await req.json();
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email: data.email },
-    });
-
-    if (existingUser) {
-      return NextResponse.json(
-        { message: "Email already exists" },
-        { status: 409 }
-      );
-    }
-
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-
-    await prisma.user.create({
-      data: {
-        name: data.name,
-        email: data.email,
-        password: hashedPassword,
-        // emailVerified: null, // already default null in your schema
-      },
-    });
-
-    // ─── THIS IS THE PART YOU ASKED ABOUT ─────────────────────────────
-    return NextResponse.json({
-      message: "Account created! Please check your email to verify.",
-      redirect: `/verify-email?email=${encodeURIComponent(data.email)}`,
-    });
-    // ─────────────────────────────────────────────────────────────────
-  } catch (err) {
-    console.error(err);
+  const exists = await prisma.user.findUnique({ where: { email } });
+  if (exists) {
     return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 }
+      { message: "Email already exists" },
+      { status: 400 }
     );
   }
+
+  const hashed = await bcrypt.hash(password, 10);
+
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      password: hashed,
+    },
+  });
+
+  // send verification email here
+
+  return NextResponse.json({
+    redirect: "/verify-email",
+  });
 }
