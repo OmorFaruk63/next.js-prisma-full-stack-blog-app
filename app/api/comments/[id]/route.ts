@@ -18,7 +18,7 @@ export async function DELETE(
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const commentId = Number(id);
+  const commentId = String(id);
 
   const comment = await prisma.comment.findUnique({
     where: { id: commentId },
