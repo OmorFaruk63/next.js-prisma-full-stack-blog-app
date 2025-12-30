@@ -16,8 +16,8 @@ export async function POST(req: Request) {
     const comment = await prisma.comment.create({
       data: {
         content: data.content,
-        postId: data.postId,
-        parentId: data.parentId,
+        postId: String(data.postId),
+        parentId: data.parentId ? String(data.parentId) : null,
         userId: user.id,
       },
       include: {
@@ -26,7 +26,12 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(comment, { status: 201 });
-  } catch {
-    return NextResponse.json({ message: "Invalid input" }, { status: 400 });
+  } catch (error) {
+    console.log(error);
+
+    return NextResponse.json(
+      { message: error?.message || "Invalid input" },
+      { status: 400 }
+    );
   }
 }

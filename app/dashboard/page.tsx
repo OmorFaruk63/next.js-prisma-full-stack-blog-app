@@ -123,7 +123,7 @@ export default async function DashboardPage() {
                     >
                       <td className="px-6 py-4">
                         <div className="text-gray-100 font-medium group-hover:text-cyan-300 transition-colors">
-                          {post.title}
+                          <Link href={`/posts/${post.slug}`}>{post.title}</Link>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-gray-400 text-sm">
