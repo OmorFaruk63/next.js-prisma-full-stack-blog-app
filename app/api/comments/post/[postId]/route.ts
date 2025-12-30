@@ -9,7 +9,7 @@ export async function GET(
 
   const comments = await prisma.comment.findMany({
     where: {
-      postId: Number(postId),
+      postId: String(postId),
       parentId: null,
     },
     orderBy: { createdAt: "asc" },
