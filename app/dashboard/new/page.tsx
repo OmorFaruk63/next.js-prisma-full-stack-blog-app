@@ -49,7 +49,7 @@ export default function NewPostPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-4xl sm:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
+          <h1 className="text-4xl sm:text-5xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
             Create New Post
           </h1>
           <p className="mt-3 text-gray-400">
@@ -60,7 +60,7 @@ export default function NewPostPage() {
         {/* Form Card */}
         <div className="relative bg-gray-900/40 backdrop-blur-xl border border-gray-800/70 rounded-2xl p-8 shadow-2xl shadow-purple-900/20">
           {/* Subtle animated background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/8 via-purple-900/8 to-pink-900/8 pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-r from-cyan-900/8 via-purple-900/8 to-pink-900/8 pointer-events-none" />
 
           <form onSubmit={handleSubmit} className="relative space-y-6 z-10">
             {/* Title */}
@@ -119,7 +119,7 @@ export default function NewPostPage() {
                       w-14 h-7 rounded-full transition-all duration-300
                       ${
                         form.published
-                          ? "bg-gradient-to-r from-cyan-500 to-purple-600"
+                          ? "bg-linear-to-r from-cyan-500 to-purple-600"
                           : "bg-gray-700"
                       }
                     `}

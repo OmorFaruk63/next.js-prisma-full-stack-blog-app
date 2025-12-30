@@ -12,14 +12,14 @@ export default async function VerifyEmailPage({
     <main className="min-h-screen bg-gradient-to-b from-gray-950 via-indigo-950 to-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="relative bg-gray-900/40 backdrop-blur-xl border border-gray-800/70 rounded-2xl p-10 shadow-2xl shadow-purple-900/20 text-center">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/10 via-purple-900/10 to-pink-900/10 opacity-60 pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-r from-cyan-900/10 via-purple-900/10 to-pink-900/10 opacity-60 pointer-events-none" />
 
           <div className="relative z-10">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-cyan-500 via-purple-600 to-pink-500 flex items-center justify-center animate-pulse-slow">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-r from-cyan-500 via-purple-600 to-pink-500 flex items-center justify-center animate-pulse-slow">
               <span className="text-3xl">✉️</span>
             </div>
 
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 mb-4">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 mb-4">
               {token ? "Email Verified!" : "Check Your Inbox"}
             </h1>
 
@@ -48,7 +48,7 @@ export default async function VerifyEmailPage({
 
             <Link
               href="/login"
-              className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300"
+              className="inline-block px-8 py-3 bg-linear-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300"
             >
               {token ? "Go to Login" : "Back to Login"}
             </Link>

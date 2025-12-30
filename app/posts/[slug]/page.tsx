@@ -54,7 +54,7 @@ export default async function PostPage({
     return (
       <main className="min-h-screen bg-gradient-to-b from-gray-950 via-indigo-950 to-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 mb-4">
+          <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-500 mb-4">
             404
           </h1>
           <p className="text-gray-400 text-xl">
@@ -76,7 +76,7 @@ export default async function PostPage({
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Post Header */}
         <header className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow mb-4">
             {post.title}
           </h1>
 
@@ -109,7 +109,7 @@ export default async function PostPage({
 
         {/* Comments Section */}
         <section className="bg-gray-900/40 backdrop-blur-xl border border-gray-800/70 rounded-2xl p-8 shadow-2xl shadow-purple-900/20">
-          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 mb-8">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-500 mb-8">
             Comments ({post.comments.length})
           </h2>
 

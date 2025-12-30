@@ -52,7 +52,6 @@ export default function RegisterPage() {
   }
 
   const handleGoogleSignIn = () => {
-
     window.location.href = "/api/auth/signin/google";
   };
 
@@ -62,12 +61,12 @@ export default function RegisterPage() {
         {/* Card */}
         <div className="relative bg-gray-900/40 backdrop-blur-xl border border-gray-800/70 rounded-2xl p-8 shadow-2xl shadow-purple-900/20 overflow-hidden">
           {/* Subtle animated gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/10 via-purple-900/10 to-pink-900/10 opacity-60 pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-r from-cyan-900/10 via-purple-900/10 to-pink-900/10 opacity-60 pointer-events-none" />
 
           <div className="relative z-10">
             {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
+              <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
                 Join NeoBlog
               </h1>
               <p className="mt-3 text-gray-400">
@@ -176,7 +175,7 @@ export default function RegisterPage() {
                 disabled={loading || success}
                 className="
                   w-full py-3.5 px-6
-                  bg-gradient-to-r from-cyan-600 to-purple-600
+                  bg-linear-to-r from-cyan-600 to-purple-600
                   hover:from-cyan-500 hover:to-purple-500
                   text-white font-medium rounded-xl
                   shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40

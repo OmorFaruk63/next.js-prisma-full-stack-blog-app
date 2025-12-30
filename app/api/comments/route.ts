@@ -26,12 +26,17 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(comment, { status: 201 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error);
-
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { message: error.message || "Something went wrong" },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { message: error?.message || "Invalid input" },
-      { status: 400 }
+      { message: "Something went wrong" },
+      { status: 500 }
     );
   }
 }

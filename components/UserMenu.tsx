@@ -1,15 +1,18 @@
 "use client";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef } from "react";
 
-export default function UserMenu({ user }) {
+export default function UserMenu() {
+  const { data: session } = useSession();
+  const user = session?.user;
+
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const name = user.name || user.email?.split("@")[0] || "User";
-  const image = user.image;
+  const name = user?.name || user?.email?.split("@")[0] || "User";
+  const image = user?.image;
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -36,10 +39,10 @@ export default function UserMenu({ user }) {
               height={40}
               className="rounded-full ring-2 ring-purple-500/40 transition-all duration-300"
             />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-600/20 opacity-0 transition-opacity duration-500" />
+            <div className="absolute inset-0 rounded-full bg-linear-to-r from-cyan-500/20 to-purple-600/20 opacity-0 transition-opacity duration-500" />
           </div>
         ) : (
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold ring-2 ring-purple-500/40 transition-all">
+          <div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold ring-2 ring-purple-500/40 transition-all">
             {name[0]?.toUpperCase()}
           </div>
         )}
@@ -58,7 +61,7 @@ export default function UserMenu({ user }) {
       >
         <div className="py-3 px-4 border-b border-gray-800">
           <p className="text-sm font-medium text-white">{name}</p>
-          <p className="text-xs text-gray-400 truncate">{user.email}</p>
+          <p className="text-xs text-gray-400 truncate">{user?.email}</p>
         </div>
         <div className="py-2">
           <DropdownItem href="/dashboard">Dashboard</DropdownItem>

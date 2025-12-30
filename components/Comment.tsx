@@ -52,7 +52,7 @@ export default function Comment({
                 }
               `}
             />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 rounded-full bg-linear-to-r from-cyan-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
         ) : (
           <div
@@ -61,7 +61,7 @@ export default function Comment({
               ${
                 isReply
                   ? "w-9 h-9 text-base bg-purple-700"
-                  : "w-11 h-11 text-lg bg-gradient-to-br from-purple-600 to-pink-600"
+                  : "w-11 h-11 text-lg bg-linear-to-r from-purple-600 to-pink-600"
               }
             `}
           >

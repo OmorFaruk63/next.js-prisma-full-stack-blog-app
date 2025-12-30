@@ -50,7 +50,7 @@ export default async function HomePage({
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
         {/* Header / Title */}
         <header className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
             Future Blog
           </h1>
           <p className="mt-3 text-gray-400 text-lg">
@@ -93,7 +93,7 @@ export default async function HomePage({
             <option value="oldest">Oldest</option>
           </select>
 
-          <button className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/20 transition-all duration-300 hover:shadow-cyan-500/40 cursor-pointer">
+          <button className="px-6 py-3 bg-linear-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/20 transition-all duration-300 hover:shadow-cyan-500/40 cursor-pointer">
             Search
           </button>
         </form>

@@ -45,7 +45,7 @@ export default async function DashboardPage() {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-6">
           <div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
+            <h1 className="text-4xl sm:text-5xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
               Your Dashboard
             </h1>
             <p className="mt-2 text-gray-400 text-lg">
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
             href="/dashboard/new"
             className="
               inline-flex items-center gap-2
-              px-6 py-3 bg-gradient-to-r from-cyan-600 to-purple-600
+              px-6 py-3 bg-linear-to-r from-cyan-600 to-purple-600
               hover:from-cyan-500 hover:to-purple-500
               text-white font-medium rounded-xl
               shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50
@@ -187,7 +187,7 @@ function StatCard({
   return (
     <div
       className={`
-        relative bg-gradient-to-br ${color}/20 border border-${
+        relative bg-linear-to-r ${color}/20 border border-${
         color.split("-")[1]
       }-800/50
         backdrop-blur-xl rounded-2xl p-6

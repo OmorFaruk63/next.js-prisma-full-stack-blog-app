@@ -31,7 +31,7 @@ export default function CommentForm({ postId }: { postId: string }) {
       <button
         type="submit"
         disabled={!content.trim() || loading}
-        className="mt-3 px-6 py-2 bg-gradient-to-r from-cyan-600 to-purple-600 text-white rounded-xl disabled:opacity-50"
+        className="mt-3 px-6 py-2 bg-linear-to-r from-cyan-600 to-purple-600 text-white rounded-xl disabled:opacity-50"
       >
         {loading ? "Sending..." : "Send"}
       </button>
