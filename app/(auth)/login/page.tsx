@@ -40,10 +40,6 @@ export default function LoginPage({
     }
   }
 
-  const handleGoogleSignIn = async () => {
-    window.location.href = "/api/auth/signin/google";
-  };
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-950 via-indigo-950 to-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">

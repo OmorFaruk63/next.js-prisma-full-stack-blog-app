@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -51,10 +52,6 @@ export default function RegisterPage() {
     }
   }
 
-  const handleGoogleSignIn = () => {
-    window.location.href = "/api/auth/signin/google";
-  };
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-950 via-indigo-950 to-gray-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -67,7 +64,7 @@ export default function RegisterPage() {
             {/* Header */}
             <div className="text-center mb-8">
               <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse-slow">
-                Join NeoBlog
+                Join Blog
               </h1>
               <p className="mt-3 text-gray-400">
                 Create your account and start exploring tomorrow’s ideas
@@ -77,7 +74,7 @@ export default function RegisterPage() {
             {/* Google Button */}
             <button
               type="button"
-              onClick={handleGoogleSignIn}
+              onClick={() => signIn("google", { callbackUrl: "/" })}
               disabled={loading}
               className="
                 w-full flex items-center justify-center gap-3

@@ -16,7 +16,7 @@ export default async function Header() {
             <div className="absolute inset-0 rounded-full bg-linear-to-r from-cyan-400/40 via-purple-500/40 to-pink-400/40 blur-xl group-hover:blur-2xl transition-all duration-700" />
           </div>
           <span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-purple-500 to-pink-500 group-hover:from-cyan-300 group-hover:via-purple-400 group-hover:to-pink-400 transition-all duration-500">
-            NeoBlog
+            Blog
           </span>
         </Link>
 
