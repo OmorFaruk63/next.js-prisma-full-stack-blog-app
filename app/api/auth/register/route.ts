@@ -62,11 +62,22 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_APP_URL
     }/api/auth/verify-email?token=${token}&email=${encodeURIComponent(email)}`;
 
-    await sendVerificationEmail({
-      to: email,
-      name: name || "there",
-      verificationUrl,
-    });
+    try {
+      await sendVerificationEmail({
+        to: email,
+        name: name || "there",
+        verificationUrl,
+      });
+    } catch (emailError) {
+      console.error("Verification email failed:", emailError);
+      return NextResponse.json(
+        {
+          message:
+            "Account created, but we could not send the verification email. Please contact support or try again later.",
+        },
+        { status: 201 }
+      );
+    }
 
     return NextResponse.json(
       {
@@ -77,8 +88,11 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("REGISTER ERROR:", error);
     return NextResponse.json(
-      { message: "Something went wrong. Please try again.", error },
+      {
+        message: "Something went wrong. Please try again.",
+      },
       { status: 500 }
     );
   }

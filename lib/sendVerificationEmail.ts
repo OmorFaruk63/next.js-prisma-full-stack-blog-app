@@ -20,18 +20,27 @@ export async function sendVerificationEmail({
   name: string;
   verificationUrl: string;
 }) {
-  const message = {
-    from: `"Blog App" <${process.env.GMAIL_USER}>`,
-    to,
-    subject: "Verify Your Email",
-    html: `
-      <h2>Hello ${name},</h2>
-      <p>Click below to verify your email:</p>
-      <a href="${verificationUrl}">Verify Email</a>
-      <p>If that doesn't work, paste this into your browser:</p>
-      <p>${verificationUrl}</p>
-    `,
-  };
+  try {
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+      throw new Error("Email credentials are not configured");
+    }
 
-  await transporter.sendMail(message);
+    const message = {
+      from: `"Blog App" <${process.env.GMAIL_USER}>`,
+      to,
+      subject: "Verify Your Email",
+      html: `
+        <h2>Hello ${name},</h2>
+        <p>Click below to verify your email:</p>
+        <a href="${verificationUrl}">Verify Email</a>
+        <p>If that doesn't work, paste this into your browser:</p>
+        <p>${verificationUrl}</p>
+      `,
+    };
+
+    await transporter.sendMail(message);
+  } catch (error) {
+    console.error("EMAIL SEND ERROR:", error);
+    throw new Error("EMAIL_SEND_FAILED");
+  }
 }
