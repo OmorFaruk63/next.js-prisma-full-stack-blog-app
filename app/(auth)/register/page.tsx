@@ -16,9 +16,6 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  // app/register/page.tsx  (in handleSubmit)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -161,15 +158,9 @@ export default function RegisterPage() {
                 </div>
               )}
 
-              {success && (
-                <div className="text-cyan-400 text-sm text-center bg-cyan-950/30 border border-cyan-900/50 rounded-lg py-2 px-4">
-                  Account created! Check your email to verify → Redirecting...
-                </div>
-              )}
-
               <button
                 type="submit"
-                disabled={loading || success}
+                disabled={loading}
                 className="
                   w-full py-3.5 px-6
                   bg-linear-to-r from-cyan-600 to-purple-600
