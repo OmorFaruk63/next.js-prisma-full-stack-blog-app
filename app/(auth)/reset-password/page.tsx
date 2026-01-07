@@ -1,16 +1,18 @@
 // app/(auth)/reset-password/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function ResetPasswordPage() {
-  const searchParams = useSearchParams();
+export default function ResetPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string; email?: string }>;
+}) {
   const router = useRouter();
 
-  const token = searchParams.get("token");
-  const email = searchParams.get("email");
+  const { token, email } = use(searchParams);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
