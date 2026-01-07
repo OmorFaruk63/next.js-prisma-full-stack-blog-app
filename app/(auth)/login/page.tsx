@@ -2,17 +2,14 @@
 //app/(auth)/login/page.tsx
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams: { callbackUrl: string };
-}) {
+export default function LoginPage() {
   const router = useRouter();
 
-  const { callbackUrl } = searchParams;
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
@@ -27,14 +24,33 @@ export default function LoginPage({
       const res = await signIn("credentials", {
         email: form.email,
         password: form.password,
-        callbackUrl,
+        redirect: false,
       });
 
-      // Successful login → redirect
+      if (res?.error) {
+        if (res.error === "EMAIL_NOT_VERIFIED") {
+          router.push(`/verify-email?email=${encodeURIComponent(form.email)}`);
+          return;
+        }
+
+        if (res.error === "ACCOUNT_LOCKED") {
+          setError("Account locked. Try again later.");
+          return;
+        }
+
+        setError("Invalid email or password");
+        return;
+      }
+
+      // ✅ Success
       router.push(callbackUrl);
       router.refresh();
-    } catch (err) {
-      setError("Something went wrong. Try again.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || "Something went wrong. Try again.");
+      } else {
+        setError("Something went wrong. Try again.");
+      }
     } finally {
       setLoading(false);
     }

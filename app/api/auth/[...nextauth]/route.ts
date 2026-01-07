@@ -1,3 +1,4 @@
+// app/api/auth/[...nextauth]/route.ts
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -5,6 +6,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { Adapter } from "next-auth/adapters";
+import crypto from "crypto";
+import { sendVerificationEmail } from "@/lib/sendVerificationEmail";
+import { rateLimit } from "@/lib/rateLimit";
+
+const MAX_ATTEMPTS = 5;
+const LOCK_TIME = 15 * 60 * 1000; // 15 minutes
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma as any) as Adapter,
@@ -33,16 +40,58 @@ export const authOptions = {
         password: { type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) return null;
+        if (!credentials?.email || !credentials.password) {
+          throw new Error("Missing credentials");
+        }
+
+        const email = credentials.email.toLowerCase();
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
 
-        if (!user || !user.password) return null;
+        if (!user || !user.password) {
+          throw new Error("Invalid email or password");
+        }
 
+        // 🔒 Account locked
+        if (user.lockedUntil && user.lockedUntil > new Date()) {
+          throw new Error("ACCOUNT_LOCKED");
+        }
+
+        // 🚨 EMAIL NOT VERIFIED → AUTO SEND EMAIL + REDIRECT
         if (!user.emailVerified) {
-          throw new Error("Email not verified");
+          // Rate limit resend
+          if (rateLimit(`verify:${email}`, 2, 60_000)) {
+            await prisma.verificationToken.deleteMany({
+              where: { identifier: email },
+            });
+
+            const token = crypto.randomBytes(32).toString("hex");
+            const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+            await prisma.verificationToken.create({
+              data: {
+                identifier: email,
+                token,
+                expires,
+              },
+            });
+
+            const verificationUrl = `${
+              process.env.NEXT_PUBLIC_APP_URL
+            }/api/auth/verify-email?token=${token}&email=${encodeURIComponent(
+              email
+            )}`;
+
+            await sendVerificationEmail({
+              to: email,
+              name: user.name || "there",
+              verificationUrl,
+            });
+          }
+
+          throw new Error("EMAIL_NOT_VERIFIED");
         }
 
         const isValid = await bcrypt.compare(
@@ -50,14 +99,35 @@ export const authOptions = {
           user.password
         );
 
-        if (!isValid) return null;
+        if (!isValid) {
+          const failed = user.failedLoginCount + 1;
+
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              failedLoginCount: failed,
+              lockedUntil:
+                failed >= MAX_ATTEMPTS
+                  ? new Date(Date.now() + LOCK_TIME)
+                  : null,
+            },
+          });
+          throw new Error("Invalid email or password");
+        }
+        // ✅ Reset counters on success
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            failedLoginCount: 0,
+            lockedUntil: null,
+          },
+        });
 
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
-          image: user.image,
         };
       },
     }),
