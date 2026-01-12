@@ -1,4 +1,5 @@
 // app/layout.tsx
+import UnderConstructionToast from "@/components/UnderConstructionToast";
 import Header from "../components/Header";
 import "./globals.css";
 import Providers from "./providers";
@@ -20,6 +21,7 @@ export default function RootLayout({
           <Header />
           {children}
         </Providers>
+        <UnderConstructionToast />
         <SpeedInsights />
       </body>
     </html>
