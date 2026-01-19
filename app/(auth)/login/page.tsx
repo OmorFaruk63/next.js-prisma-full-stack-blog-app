@@ -5,6 +5,7 @@ import { Suspense, use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 export default function LoginPage({
   searchParams,
 }: {
@@ -13,8 +14,11 @@ export default function LoginPage({
   const router = useRouter();
 
   const { callbackUrl } = use(searchParams);
-
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState({
+    email: "user@gmail.com",
+    password: "123456",
+  });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -109,16 +113,31 @@ export default function LoginPage({
                   required
                 />
 
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="w-full px-5 py-3.5 bg-gray-900/50 border border-gray-700 rounded-xl text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500/60 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
-                  value={form.password}
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                  }
-                  required
-                />
+                {/* Password field with toggle */}
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    className="w-full px-5 py-3.5 bg-gray-900/50 border border-gray-700 rounded-xl text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500/60 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 pr-12"
+                    value={form.password}
+                    onChange={(e) =>
+                      setForm({ ...form, password: e.target.value })
+                    }
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 focus:outline-none transition-colors"
+                  >
+                    {showPassword ? (
+                      <FiEyeOff size={20} />
+                    ) : (
+                      <FiEye size={20} />
+                    )}
+                  </button>
+                </div>
 
                 {error && (
                   <div className="text-red-400 text-sm text-center bg-red-950/30 border border-red-900/50 rounded-lg py-2 px-4">
@@ -129,7 +148,7 @@ export default function LoginPage({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-6 bg-linear-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 disabled:opacity-60 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-6 bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white font-medium rounded-xl shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 disabled:opacity-60 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
