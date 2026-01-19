@@ -5,12 +5,24 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react"; // or any icon library
 
 export default function UnderConstructionToast() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    localStorage.setItem("under-construction-toast-seen", "true");
+  };
 
   // Optional: auto-hide after 12 seconds
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(false), 12000);
-    return () => clearTimeout(timer);
+    setTimeout(() => {
+      if (typeof window !== "undefined") {
+        const seen =
+          localStorage.getItem("under-construction-toast-seen") || false;
+        if (!seen) {
+          setIsVisible(true);
+        }
+      }
+    }, 100);
   }, []);
 
   if (!isVisible) return null;
@@ -26,8 +38,8 @@ export default function UnderConstructionToast() {
       >
         {/* Close button */}
         <button
-          onClick={() => setIsVisible(false)}
-          className="absolute top-3 right-3 text-gray-400 hover:text-cyan-400 transition-colors"
+          onClick={handleClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-cyan-400 transition-colors cursor-pointer"
           aria-label="Close"
         >
           <X size={18} />

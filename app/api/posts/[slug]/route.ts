@@ -10,7 +10,7 @@ export async function GET(
     params,
   }: {
     params: Promise<{ slug: string }>;
-  }
+  },
 ) {
   const { slug } = await params;
 
@@ -22,7 +22,7 @@ export async function GET(
     },
   });
 
-  if (!post || !post.published) {
+  if (!post) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
 
@@ -31,7 +31,7 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
 
@@ -59,7 +59,7 @@ export async function PATCH(
 
 export async function DELETE(
   _: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
     const { slug } = await params;
@@ -69,7 +69,7 @@ export async function DELETE(
     if (!user) {
       return NextResponse.json(
         { message: "You must be logged in to delete a post" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -100,7 +100,7 @@ export async function DELETE(
           requiredRole: ["AUTHOR", "ADMIN"],
           yourRole: user.role,
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -114,7 +114,7 @@ export async function DELETE(
         message: "Post deleted successfully",
         deletedPost: { slug, title: post.title },
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("[POST_DELETE_ERROR]", error);
@@ -130,7 +130,7 @@ export async function DELETE(
             "Cannot delete post due to linked comments (database constraint)",
           error: "foreign_key_constraint",
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -139,7 +139,7 @@ export async function DELETE(
         message: "Something went wrong while deleting the post",
         error: error instanceof Error ? error.message : "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
