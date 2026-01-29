@@ -16,3 +16,12 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const MessageStatus = {
+  PENDING: 'PENDING',
+  REPLIED: 'REPLIED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type MessageStatus = (typeof MessageStatus)[keyof typeof MessageStatus]

@@ -66,6 +66,14 @@ export default function UserMenu() {
         <div className="py-2">
           <DropdownItem href="/dashboard">Dashboard</DropdownItem>
           <DropdownItem href="/dashboard/new">Write Post</DropdownItem>
+          {user?.role === "ADMIN" && (
+            <>
+              <DropdownItem href="/admin/contact">
+                Contact Messages
+              </DropdownItem>
+              <DropdownItem href="/admin">Admin</DropdownItem>
+            </>
+          )}
         </div>
         <div className="py-2 border-t border-gray-800">
           <button

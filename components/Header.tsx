@@ -24,8 +24,7 @@ export default async function Header() {
         <div className="flex items-center gap-6 sm:gap-10">
           {/* Main nav - can be hidden on mobile or turned into menu */}
           <nav className="hidden md:flex items-center gap-8">
-            <NavLink href="/posts">All Posts</NavLink>
-            <NavLink href="/categories">Topics</NavLink>
+            <NavLink href="/contact">Contact Us</NavLink>
             <NavLink href="/about">About</NavLink>
           </nav>
 

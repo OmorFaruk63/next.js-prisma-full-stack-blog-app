@@ -1,3 +1,4 @@
+// components/page/home/PostGrid.tsx
 import Link from "next/link";
 import { format } from "date-fns"; // for better date formatting
 
